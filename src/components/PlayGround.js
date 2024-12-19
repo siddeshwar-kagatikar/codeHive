@@ -1,0 +1,120 @@
+import React,{useCallback, useState} from 'react'
+// import {useParams} from 'react-router-dom'
+import '../styles/playground.scss'
+import logo from '../images/favicon.ico';
+import EditorContainer from './EditorContainer';
+import { makeSubmission } from './service';
+
+export default function PlayGround() {
+  const [input, setInput] = useState('');
+  const [output, setOutput] = useState('');
+  const [showLoader, setShowLoader] = useState(false);
+
+  const importInput = (e) => {
+    const file = e.target.files[0];
+    const fileType = file.type.includes('text');
+    if(fileType)
+    {
+        const fileReader = new FileReader();
+        fileReader.readAsText(file);
+        fileReader.onload = () => {
+          const importedInput = fileReader.result;
+          // document.querySelector('.input textarea').value = importedInput;
+          setInput(importedInput);
+        }
+    }
+    else
+    {
+      alert('Invalid file type');
+    }
+  }
+
+  const exportOutput = () => {
+    if(output === '')
+    {
+      alert('No output to export');
+      return;
+    }
+    const blob = new Blob([output.trim()], {type: 'text/plain'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'output.txt';
+    a.click();
+  }
+
+  const changeInputText = (e) => {
+    setInput(e.target.value);
+  }
+
+  const changeOutputText = (e) => {
+    setOutput(e.target.value);
+  }
+
+  const callback = ({apiStatus,data,message}) => {
+    if(apiStatus === 'loading'){
+      setShowLoader(true);
+    }
+    else if(apiStatus === 'error'){
+      setOutput('Something went wrong');
+      setShowLoader(false);
+      // alert(message);
+    }
+    else{
+      //api success
+      if(data.status.id === 3){
+        setOutput(atob(data.stdout));
+        setShowLoader(false);
+      }
+      else{
+        setOutput(atob(data.stderr));
+        setShowLoader(false);
+        // alert(data.status.description);
+      }
+    }
+  }
+
+  const runCode = useCallback(({code,language}) => {
+    console.log('running code');
+    makeSubmission({code,language,callback,input})
+  },[input])
+
+  return (
+    <div className='playground-container'>
+      <div className='header'>
+        <img className='logo' src={logo} alt='playground' />
+      </div>
+      <div className='content-container'>
+        <div className='editor'>
+          <EditorContainer runCode={runCode}/>
+        </div>
+        <div className='input'>
+          <div className='input-header'>
+            <b>Input: </b>
+            <label htmlFor='input' className='icon-container'>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M440-320v-326L336-542l-56-58 200-200 200 200-56 58-104-104v326h-80ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>
+            <span className=''><b>Import Input</b></span>
+            </label>
+            <input type='file' id="input" style={{display:'none'}} onChange={importInput}/>
+          </div> 
+          <textarea onChange={changeInputText} value={input}></textarea>
+        </div>
+        <div className='input'>
+        <div className='input-header'>
+            <b>Output: </b>
+            <button className='icon-container' style={{ border: 'none', outline: 'none', background: 'none'}} onClick={exportOutput}>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>
+            <span className=''><b>Export Output</b></span>
+            </button>
+          </div>
+          <textarea readOnly value={output} onChange={changeOutputText}></textarea> 
+        </div>
+      </div>
+      {showLoader &&<div className='fullpage-loader'>
+        <div className='loader'>
+
+        </div>
+      </div>}
+    </div>
+  )
+}
