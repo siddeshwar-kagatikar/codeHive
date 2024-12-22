@@ -1,18 +1,15 @@
 const connectToMongo = require('./db');
-const express = require('express')
+const express = require('express');
+var cors = require('cors');
 
 connectToMongo();
 const app = express();
-const port = 3000
+const port = 5000
 
+app.use(cors());
 app.use(express.json());
-
-// respond with "hello world" when a GET request is made to the homepage
-app.get('/', (req, res) => {
-  res.send('hello world')
-})
-
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/question', require('./routes/questions'));
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
