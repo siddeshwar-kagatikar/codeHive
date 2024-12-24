@@ -34,6 +34,20 @@ const QuestionState = (props) => {
     setQuestions(questions.concat(json));
   }
 
+  const editQuestion = async (id, roomId, heading, question, example, difficulty) => {
+    const response = await fetch(`${host}/api/question/editquestion/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
+      },
+      body: JSON.stringify({ roomId, heading, question, example, difficulty })
+    });
+    const json = await response.json();
+    console.log(json);
+    setQuestions(questions.map((question) => question._id === id ? json : question));
+  }
+
   const deleteQuestion = async (id,roomId) => {
     const response = await fetch(`${host}/api/question/deletequestion/${id}`, {
       method: "DELETE",
@@ -49,7 +63,7 @@ const QuestionState = (props) => {
   }
 
   return (
-    <QuestionContext.Provider value={{ questions, getQuestions, addQuestion, deleteQuestion }}>
+    <QuestionContext.Provider value={{ questions, getQuestions, addQuestion, editQuestion, deleteQuestion }}>
       {props.children}
     </QuestionContext.Provider>
   );

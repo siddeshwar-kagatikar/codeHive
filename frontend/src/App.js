@@ -6,6 +6,7 @@ import Signup from './components/Signup';
 import Navbar from './components/Navbar';
 import Addquestion from './components/Addquestion';
 import QuestionState from './context/QuestionState';
+import PlayGround from './codeEditor/PlayGround';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path="/login" element={<Login/>} />
           <Route path="/signup" element={<Signup/>} />
           <Route path="/addquestion" element={<Addquestion/>} />
+          <Route path='/question/:id' element={<PlayGround/>} />
         </Routes>
       </BrowserRouter>
       </QuestionState>

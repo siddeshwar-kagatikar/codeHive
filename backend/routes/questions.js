@@ -8,7 +8,7 @@ const fetchuser = require('../middleware/fetchuser')
 router.post('/getquestions', fetchuser, async (req, res) => {
     try {
         const questions = await Question.find({roomId: req.body.roomId});
-        console.log(`from room: ${req.body.roomId}`);
+        console.log(`from room yay: ${req.body.roomId}`);
         res.json(questions);
     } catch (error) {
         console.error(error.message);
@@ -45,7 +45,29 @@ router.post('/addquestion',fetchuser, async (req, res) => {
     }
 })
 
-// Route 3: Delete a question
+// Route 3: Edit a question
+router.put('/editquestion/:id', fetchuser, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { roomId, heading, question, example, difficulty } = req.body;
+        const newQuestion = { roomId, heading, question, example, difficulty };
+        console.log(newQuestion);
+        const ques = await Question.findById(id);
+        if (!ques) {
+            return res.status(404).send("Not Found");
+        }
+        if (ques.roomId !== req.body.roomId) {
+            return res.status(401).send("Not Allowed");
+        }
+        const updatedQuestion = await Question.findByIdAndUpdate(id, { $set: newQuestion }, { new: true });
+        res.json({ "Success": "Question has been updated", updatedQuestion });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal server error");
+    }
+})
+
+// Route 4: Delete a question
 router.delete('/deletequestion/:id', fetchuser, async (req, res) => {
     try {
         const { id } = req.params;

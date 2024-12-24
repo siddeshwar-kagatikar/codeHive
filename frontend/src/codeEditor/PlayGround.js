@@ -1,11 +1,12 @@
 import React,{useCallback, useState} from 'react'
-// import {useParams} from 'react-router-dom'
+import { useLocation} from 'react-router-dom'
 import '../styles/playground.scss'
-import logo from '../images/favicon.ico';
 import EditorContainer from './EditorContainer';
 import { makeSubmission } from './service';
 
 export default function PlayGround() {
+  const location = useLocation();
+  const { heading, question, example } = location.state;
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [showLoader, setShowLoader] = useState(false);
@@ -81,12 +82,10 @@ export default function PlayGround() {
 
   return (
     <div className='playground-container'>
-      <div className='header'>
-        <img className='logo' src={logo} alt='playground' />
-      </div>
+
       <div className='content-container'>
         <div className='editor'>
-          <EditorContainer runCode={runCode}/>
+          <EditorContainer runCode={runCode} heading={heading} question={question} example={example}/>
         </div>
         <div className='input'>
           <div className='input-header'>

@@ -33,6 +33,7 @@ router.post('/createuser', async (req, res) => {
 
         user = await User.create({
             name: req.body.name,
+            user_type: req.body.user_type,
             password: secpass,
             email: req.body.email
         })
@@ -40,13 +41,12 @@ router.post('/createuser', async (req, res) => {
         // res.json({error: 'Please enter a unique value for email', errmessage:err.message})})
         const data = {
             user:{
-                id: user.id
+                id: user.id,
+                user_type: user.user_type
             }
         }
         success = true;
         const autoken = jwt.sign(data,JWT_SECRET);
-        console.log({success,autoken});
-
         res.json({success,autoken})
     } catch (error) {
         console.error(error.message);
@@ -71,6 +71,9 @@ router.post('/login', async(req,res) => {
         if(!user){
             return res.status(400).json({error:"enter correct cerdentials!!!"})
         }
+        if(user.user_type !== req.body.user_type){
+            return res.status(400).json({error:"enter correct user type!!!"})
+        }
         let password = req.body.password;
         const cmppassword = await bcrypt.compare(password,user.password);
         if(!cmppassword){
@@ -78,7 +81,8 @@ router.post('/login', async(req,res) => {
         }
         const data = {
             user:{
-                id: user.id
+                id: user.id,
+                user_type: user.user_type
             }
         }
         success = true
@@ -91,15 +95,17 @@ router.post('/login', async(req,res) => {
 })
 
 // Route 3: Get loggedin user details using POST "/api/auth/getuser". Login required
-router.post('/getuser',fetchuser,async (req,res) => {
-    try{
-    let userId = req.user.id;
-    const user = await User.findById(userId).select("-password");
-    res.send(user)
-    }catch(error){
-        console.error(error.message);
-        res.status(500).send("error at backend");
-    }
-})
+// router.post('/getuser',fetchuser,async (req,res) => {
+//     try{
+//     let userId = req.user.id;
+//     let user_type = req.user.user_type;
+//     console.log({userId,user_type});
+//     const user = await User.findById(userId).select("-password");
+//     res.send(user)
+//     }catch(error){
+//         console.error(error.message);
+//         res.status(500).send("error at backend");
+//     }
+// })
 
 module.exports = router

@@ -14,7 +14,7 @@ const fileExtensionMapping = {
   'javascript': 'js'
 }
 
-export default function EditorContainer({runCode}) {
+export default function EditorContainer({runCode,heading,question,example}) {
   const [code, setCode] = useState("// Write your code here");
   const [language, setLanguage] = useState('cpp');
   const [theme, setTheme] = useState('vs-dark');
@@ -80,9 +80,28 @@ export default function EditorContainer({runCode}) {
     <div className='root-editor-container' style={FullScreenMode ? styles.fullScreen : {}}>
       <div className='editor-header'>
         <div className='left-container'>
-          <b className='title'>{"title of the card"}</b>
+          <b className='title'>{heading}</b>
           <svg xmlns="http://www.w3.org/2000/svg" height="44px" viewBox="0 -960 960 960" width="24px" fill="#D9D9D9"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
           <button>Save code</button>
+{/*--------------------------------------------------------------------------------- off canva begin------------------------------------------------------------------------------- */}
+
+            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
+              Show Question
+            </button>
+
+            <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" style={{width:'40vw'}}aria-labelledby="offcanvasScrollingLabel">
+              <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasScrollingLabel">{heading}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              </div>
+              <div class="offcanvas-body">
+                <h5>Question</h5>
+                <p>{question}</p>
+                <h5>Example</h5>
+                {example}
+              </div>
+            </div>
+{/*-------------------------------------------------------------------------------- off canva end----------------------------------------------------------------------------------- */}
         </div>
         <div className='right-container'>
           <select onChange={onChangeLanguage} value={language}>

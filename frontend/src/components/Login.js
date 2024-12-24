@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [user_type, setUser_type] = useState("");
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -14,13 +15,17 @@ export default function Login() {
                 "Content-Type": "application/json"
             },
             
-            body: JSON.stringify({email: email, password: password })
+            body: JSON.stringify({email: email, user_type: user_type , password: password })
         });
         const json = await response.json();
         console.log(json);
         if(json.success){
             //save the auth token and redirect
             localStorage.setItem('token',json.autoken);
+            if(user_type === "admin")
+                localStorage.setItem('user_type', true);
+            else
+                localStorage.setItem('user_type', false);
             navigate("/addquestion");
             console.log("logged in");
         }
@@ -74,6 +79,19 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+          </div>
+          <div className='mb-3'>
+          <label htmlFor="user_type" className="form-label me-3">
+            User Type: 
+          </label>
+          <div className="form-check form-check-inline mb-1">
+            <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" onClick={(e) => setUser_type("admin")}/>
+            <label className="form-check-label" htmlFor="inlineRadio1">Admin</label>
+          </div>
+          <div className="form-check form-check-inline">
+            <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" onClick={(e) => setUser_type("user")}/>
+            <label className="form-check-label" htmlFor="inlineRadio1">User</label>
+          </div>
           </div>
           <button type="submit" className="btn btn-primary w-100" onClick={handleSubmit}>
             Login

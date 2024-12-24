@@ -1,7 +1,24 @@
-import React from 'react';
-import {Link} from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import Logout from './Logout';
 
 export default function Navbar() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
+
+  // Check authentication state on component mount
+  useEffect(() => {
+    setIsAuthenticated(!!localStorage.getItem('token'));
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user_type');
+    navigate('/login');
+    setIsAuthenticated(false); // Update state after logout
+  };
+
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
@@ -29,7 +46,14 @@ export default function Navbar() {
               <a className="nav-link disabled" aria-disabled="true">Disabled</a>
             </li>
           </ul>
-          <Link className="btn btn-primary mx-1" to="/login" role="button">Login</Link>
+          {!isAuthenticated ? (
+            <div>
+              <Link className="btn btn-primary mx-1" to="/login" role="button">Login</Link>
+              <Link className="btn btn-primary mx-1" to="/signup" role="button">SignUp</Link>
+            </div>
+          ) : (
+            <Logout handleLogout={handleLogout} />
+          )}
         </div>
       </div>
     </nav>
