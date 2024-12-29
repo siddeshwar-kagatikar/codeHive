@@ -1,16 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import TimerContext from '../context/TimerContext';
 import Logout from './Logout';
 
 export default function Navbar() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { timeLeft } = useContext(TimerContext);
   const navigate = useNavigate();
 
-  // Check authentication state on component mount
-  useEffect(() => {
-    setIsAuthenticated(!!localStorage.getItem('token'));
-  }, []);
+  const formatTime = (time) => {
+    if (time === null) return ''; // Timer not running
+    const hours = Math.floor(time / 3600);
+    const minutes = Math.floor((time % 3600) / 60);
+    const seconds = time % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes
+      .toString()
+      .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -19,10 +27,14 @@ export default function Navbar() {
     setIsAuthenticated(false); // Update state after logout
   };
 
+  useEffect(() => {
+    setIsAuthenticated(!!localStorage.getItem('token'));
+  }, []);
+
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/">Navbar</Link>
+        <Link className="navbar-brand" to="/">MyApp</Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -46,14 +58,21 @@ export default function Navbar() {
               <a className="nav-link disabled" aria-disabled="true">Disabled</a>
             </li>
           </ul>
-          {!isAuthenticated ? (
-            <div>
-              <Link className="btn btn-primary mx-1" to="/login" role="button">Login</Link>
-              <Link className="btn btn-primary mx-1" to="/signup" role="button">SignUp</Link>
-            </div>
-          ) : (
-            <Logout handleLogout={handleLogout} />
-          )}
+          <div className="d-flex align-items-center">
+            {timeLeft !== null && (
+              <div className="me-3">
+                <strong>Time Left: </strong>{formatTime(timeLeft)}
+              </div>
+            )}
+            {!isAuthenticated ? (
+              <>
+                <Link className="btn btn-primary mx-1" to="/login" role="button">Login</Link>
+                <Link className="btn btn-primary mx-1" to="/signup" role="button">SignUp</Link>
+              </>
+            ) : (
+              <Logout handleLogout={handleLogout}/>
+            )}
+          </div>
         </div>
       </div>
     </nav>

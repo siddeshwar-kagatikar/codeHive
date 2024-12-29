@@ -1,8 +1,10 @@
-import React,{useCallback, useState} from 'react'
+import React,{ useContext, useCallback, useState, useEffect} from 'react'
 import { useLocation} from 'react-router-dom'
 import '../styles/playground.scss'
 import EditorContainer from './EditorContainer';
 import { makeSubmission } from './service';
+import { useNavigate } from "react-router-dom";
+import TimerContext from '../context/TimerContext';
 
 export default function PlayGround() {
   const location = useLocation();
@@ -10,6 +12,34 @@ export default function PlayGround() {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [showLoader, setShowLoader] = useState(false);
+
+  const navigate = useNavigate();
+  const { timeLeft } = useContext(TimerContext);
+
+    // Use state to track the current values of heading, question, etc.
+    const [currentHeading, setCurrentHeading] = useState(heading);
+    const [currentQuestion, setCurrentQuestion] = useState(question);
+    const [currentExample, setCurrentExample] = useState(example);
+    // const [currentDifficulty, setCurrentDifficulty] = useState(difficulty);
+  
+    useEffect(() => {
+      // Update the state when the change
+      setCurrentHeading(heading);
+      setCurrentQuestion(question);
+      setCurrentExample(example);
+      // setCurrentDifficulty(difficulty);
+    }, [heading, question, example]);
+
+    const user = localStorage.getItem('user_type');
+    const admin = user === 'admin';
+
+    useEffect(() => {
+      if (timeLeft === null && !admin) {
+        navigate("/userhome");
+      }
+      // console.log(!admin);
+      // console.log(timeLeft);
+    }, [timeLeft, admin, navigate]); // Added timeleft and admin as dependencies
 
   const importInput = (e) => {
     const file = e.target.files[0];
@@ -85,7 +115,7 @@ export default function PlayGround() {
 
       <div className='content-container'>
         <div className='editor'>
-          <EditorContainer runCode={runCode} heading={heading} question={question} example={example}/>
+          <EditorContainer runCode={runCode} heading={currentHeading} question={currentQuestion} example={currentExample}/>
         </div>
         <div className='input'>
           <div className='input-header'>

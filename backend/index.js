@@ -1,12 +1,12 @@
 const connectToMongo = require('./db');
 const express = require('express');
-var cors = require('cors');
-// const http = require('http');
-// const initializeSocket = require('./routes/socket');
+const http = require('http');
+const cors = require('cors');
+const initializeSocket = require('./routes/socket'); // Import the WebSocket logic
 
 connectToMongo();
 const app = express();
-const port = 5000
+const port = 5000;
 
 app.use(cors());
 app.use(express.json());
@@ -16,11 +16,12 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/question', require('./routes/questions'));
 
 // Create HTTP server
-// const server = http.createServer(app);
+const server = http.createServer(app);
 
 // Initialize WebSocket server
-// const io = initializeSocket(server);
+initializeSocket(server);
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
+// Start the server
+server.listen(port, () => {
+  console.log(`Developing app listening at http://localhost:${port}`);
+});

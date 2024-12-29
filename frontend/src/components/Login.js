@@ -20,14 +20,20 @@ export default function Login() {
         const json = await response.json();
         console.log(json);
         if(json.success){
-            //save the auth token and redirect
-            localStorage.setItem('token',json.autoken);
-            if(user_type === "admin")
-                localStorage.setItem('user_type', true);
-            else
-                localStorage.setItem('user_type', false);
-            navigate("/addquestion");
-            console.log("logged in");
+          //save the auth token and redirect
+          localStorage.setItem('token',json.autoken);
+          if(user_type === "admin")
+            {
+              localStorage.setItem('user_type', "admin");
+              navigate("/addquestion");
+            }
+          else
+          {
+            localStorage.setItem('user_type', "user");
+            navigate("/userhome");
+          }
+          
+          console.log("logged in");
         }
         else{
             alert("invalid credentials")

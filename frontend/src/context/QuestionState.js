@@ -1,9 +1,18 @@
 import { useState } from 'react';
 import QuestionContext from './questionContext';
 
+
 const QuestionState = (props) => {
   const [questions, setQuestions] = useState([]);
   const host = "http://localhost:5000";
+
+  const setques = async (id,roomId,heading,question,example,difficulty) => {
+    const json = { _id: id, roomId, heading, question, example, difficulty };
+    console.log("this is the json: ",json);
+    console.log("these are the old questions: ",questions);
+    // await setQuestions(questions.map((question) => question._id === id ? json : question));
+    // console.log("this are the updated questions: ",questions);
+  }
 
   const getQuestions = async (roomId) => {
     const response = await fetch(`${host}/api/question/getquestions`, {
@@ -63,7 +72,7 @@ const QuestionState = (props) => {
   }
 
   return (
-    <QuestionContext.Provider value={{ questions, getQuestions, addQuestion, editQuestion, deleteQuestion }}>
+    <QuestionContext.Provider value={{ questions, setques, getQuestions, addQuestion, editQuestion, deleteQuestion }}>
       {props.children}
     </QuestionContext.Provider>
   );

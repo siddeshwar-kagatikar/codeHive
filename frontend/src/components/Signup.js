@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
+    const [user_type, setUser_type] = useState("");
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -13,16 +16,25 @@ export default function Signup() {
                 "Content-Type": "application/json"
             },
             
-            body: JSON.stringify({name: name, email: email, password: password })
+            body: JSON.stringify({name: name, user_type: user_type , email: email, password: password })
         });
         const json = await response.json();
         console.log(json);
         if(json.success){
-            //save the auth token and redirect
-            localStorage.setItem('token',json.autoken);
-            // history.push("/");
-            // navigate("/");
-            console.log("Signed in");
+          //save the auth token and redirect
+          localStorage.setItem('token',json.autoken);
+          if(user_type === "admin")
+            {
+              localStorage.setItem('user_type', true);
+              navigate("/addquestion");
+            }
+          else
+          {
+            localStorage.setItem('user_type', false);
+            navigate("/userhome");
+          }
+          
+          console.log("signed in");
         }
         else{
             alert("invalid credentials")
@@ -75,6 +87,19 @@ export default function Signup() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+          </div>
+          <div className='mb-3'>
+          <label htmlFor="user_type" className="form-label me-3">
+            User Type: 
+          </label>
+          <div className="form-check form-check-inline mb-1">
+            <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" onClick={(e) => setUser_type("admin")}/>
+            <label className="form-check-label" htmlFor="inlineRadio1">Admin</label>
+          </div>
+          <div className="form-check form-check-inline">
+            <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option1" onClick={(e) => setUser_type("user")}/>
+            <label className="form-check-label" htmlFor="inlineRadio1">User</label>
+          </div>
           </div>
           <button type="submit" className="btn btn-primary w-100" onClick={handleSubmit}>
             Signup
