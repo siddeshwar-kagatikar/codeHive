@@ -1,0 +1,60 @@
+.add-question-container {
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+  }
+  
+  .offcanvas {
+    background-color: #f8f9fa; /* Light background for offcanvas */
+    color: #333;
+  }
+  
+  .offcanvas-header {
+    background-color: #1f2937; /* Match with hero-section */
+    color: #fff;
+  }
+  
+  .form-control, .form-select {
+    border: 1px solid #ccc;
+  }
+  
+  .cta-button {
+    background-color: #1f2937; /* Dark button */
+    color: #fff;
+    border: none;
+  }
+  
+  .cta-button:hover {
+    background-color: #4a5568; /* Slightly lighter on hover */
+    color: #fff;
+  }
+  
+  .btn-close {
+    background-color: transparent;
+    color: #333;
+  }
+
+  .cta-button {
+    background-color: #f7d602; /* Yellow color */
+    color: #333; /* Dark text for contrast */
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 30px; /* Rounded button */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out; /* Smooth transition */
+    cursor: pointer;
+  }
+  
+  .cta-button:hover {
+    background-color: #ffd700; /* Brighter yellow on hover */
+    color: #1f2937; /* Slightly darker text */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Elevated shadow */
+    transform: scale(1.1); /* Slightly larger on hover */
+  }
+  
+  .cta-button:active {
+    transform: scale(0.95); /* Subtle press effect */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  

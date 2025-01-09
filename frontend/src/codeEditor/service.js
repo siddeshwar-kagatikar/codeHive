@@ -31,13 +31,15 @@ async function getSubmission(tokenId,callback) {
 
 
 export async function makeSubmission({code, language, callback, stdin}) {
+    // console.log("stdin",btoa(stdin));
+    console.log("code",btoa(code));
     const url = 'https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=true&wait=false&fields=*';
     const httpOptions = {
         method: 'POST',
         headers: {
             'x-rapidapi-host': 'judge0-ce.p.rapidapi.com',
             'x-rapidapi-key': '88f80e396emsh932ceb359d5e283p18c4e0jsn634b83dcacc1',
-            'content-type': 'application/json',
+            // 'content-type': 'application/json',
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -59,10 +61,7 @@ export async function makeSubmission({code, language, callback, stdin}) {
                 apiSubmissionResult = await getSubmission(tokenId);
                 statusCode = apiSubmissionResult.status.id;
             }catch(err){
-                callback({
-                    apiStatus: 'error',
-                    message: JSON.stringify(err)
-                });
+                callback({ apiStatus: 'error', message: JSON.stringify(err) });
                 return;
             }
         }

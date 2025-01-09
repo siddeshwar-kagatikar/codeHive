@@ -1,7 +1,8 @@
-import React,{useState,useRef, useEffect} from 'react'
+import React,{useState, useRef, useEffect, useContext} from 'react'
+import codeContext from '../context/codeContext';
 import '../styles/editorcontainer.scss'
 import Editor from "@monaco-editor/react";
-
+import { on } from 'stream';
 
 const editorOptions = {
   wordWrap: 'on'
@@ -14,7 +15,10 @@ const fileExtensionMapping = {
   'javascript': 'js'
 }
 
-export default function EditorContainer({runCode,heading,question,example}) {
+export default function EditorContainer({submitCode,runCode,qid,heading,question,example}) {
+  const context = useContext(codeContext);
+  const { prevcode, getCode, saveCode } = context;
+
   const [code, setCode] = useState("// Write your code here");
   const [language, setLanguage] = useState('cpp');
   const [theme, setTheme] = useState('vs-dark');
@@ -34,13 +38,22 @@ export default function EditorContainer({runCode,heading,question,example}) {
       setCurrentExample(example);
       // setCurrentDifficulty(difficulty);
     }, [heading, question, example]);
+
+    const getCodefunc = async (qid, language) => {
+      await getCode(qid, language);
+      setCode(prevcode);
+      onChangeCode(prevcode);
+    }
+
+    useEffect(() => {
+      getCodefunc(qid, language);
+    })
   
   const onChangeCode = (newCode) => {
     codeRef.current = newCode;
-    // console.log(codeRef.current);
   }
 
-  const saveCode = () => { 
+  const onsaveCode = () => { 
     // const code = codeRef.current;
     // const blob = new Blob([code], {type: 'text/plain'});
     // const url = URL.createObjectURL(blob);
@@ -101,13 +114,17 @@ export default function EditorContainer({runCode,heading,question,example}) {
     runCode({code: codeRef.current, language});
   }
 
+  const onSubmitCode = () => {
+    submitCode({code: codeRef.current, language});
+  }
+
   return (
     <div className='root-editor-container' style={FullScreenMode ? styles.fullScreen : {}}>
       <div className='editor-header'>
         <div className='left-container'>
           <b className='title'>{heading}</b>
           <svg xmlns="http://www.w3.org/2000/svg" height="44px" viewBox="0 -960 960 960" width="24px" fill="#D9D9D9"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
-          <button onClick={saveCode}>Save code</button>
+          <button onClick={onsaveCode}>Save code</button>
 {/*--------------------------------------------------------------------------------- off canva begin------------------------------------------------------------------------------- */}
 
             <button className="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
@@ -153,7 +170,7 @@ export default function EditorContainer({runCode,heading,question,example}) {
         />
       </div>
       <div className='editor-footer'>
-        <button onClick={onChangefullScreen}>Full Screen</button>
+        <button onClick={onSubmitCode}>Submit Code</button>
         <label 
   htmlFor="import-code" 
   style={{

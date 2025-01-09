@@ -1,0 +1,33 @@
+/* Style for rows with high similarity */
+.highlight-row {
+    background-color: #f8d7da;  /* Light red background */
+    color: #721c24;  /* Dark red text color */
+    font-weight: bold;  /* Bold text for highlighted rows */
+  }
+  
+  /* Improve table styling */
+  .table {
+    margin: 0 auto;  /* Center the table */
+    width: 80%;  /* Set table width */
+    border-radius: 8px;  /* Round corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Add shadow */
+  }
+  
+  /* Make table headers bold with dark background */
+  .table-dark th {
+    background-color: #343a40;
+    color: white;
+  }
+  
+  /* Add hover effect for rows */
+  .table-hover tbody tr:hover {
+    background-color: #f1f1f1;  /* Light grey on hover */
+  }
+  
+  /* Make the table responsive on small screens */
+  @media (max-width: 768px) {
+    .table {
+      width: 100%;
+    }
+  }
+  

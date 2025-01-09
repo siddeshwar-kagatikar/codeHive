@@ -1,22 +1,22 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import questionContext from '../context/questionContext';
 import Editques from './Editques';
+import '../styles/QuestionHead.css'; // Custom styles for this component
 
 export default function QuestionHead(props) {
   const context = useContext(questionContext);
   const { deleteQuestion } = context;
   const user = localStorage.getItem('user_type');
   const admin = user === 'admin';
+  const navigate = useNavigate();
 
-  // Use state to track the current values of heading, question, etc.
   const [currentHeading, setCurrentHeading] = useState(props.heading);
   const [currentQuestion, setCurrentQuestion] = useState(props.question);
   const [currentExample, setCurrentExample] = useState(props.example);
   const [currentDifficulty, setCurrentDifficulty] = useState(props.difficulty);
 
   useEffect(() => {
-    // Update the state when the props change
     setCurrentHeading(props.heading);
     setCurrentQuestion(props.question);
     setCurrentExample(props.example);
@@ -27,30 +27,39 @@ export default function QuestionHead(props) {
     deleteQuestion(props.id, "1213");
   };
 
+  const onPlagCheck = () => {
+    navigate(`/plagcheck/${props.id}`);
+  };
+
+  const onAddTestcases = () => {
+    navigate(`/testcases/${props.id}`);
+  };
+
   return (
-    <li className="list-group-item d-flex justify-content-between align-items-center">
-      <Link
-        to={{
-          pathname: `/question/${props.id}`,
-        }}
-        state={{
-          heading: currentHeading,
-          question: currentQuestion,
-          example: currentExample,
-        }}
-        className="text-decoration-none"
-      >
-        {currentHeading}
-      </Link>
-      <div className="d-flex align-items-center">
+    <li className="question-item">
+      <div className="question-header">
+        <Link
+          to={{
+            pathname: `/question/${props.id}`,
+          }}
+          state={{
+            qid: props.id,
+            heading: currentHeading,
+            question: currentQuestion,
+            example: currentExample,
+          }}
+          className="question-title"
+        >
+          {currentHeading}
+        </Link>
         <span
-          className={`badge ${
+          className={`difficulty-badge ${
             currentDifficulty === 1
-              ? 'bg-success'
+              ? 'difficulty-easy'
               : currentDifficulty === 2
-              ? 'bg-warning text-dark'
-              : 'bg-danger'
-          } me-2`}
+              ? 'difficulty-medium'
+              : 'difficulty-hard'
+          }`}
         >
           {currentDifficulty === 1
             ? 'Easy'
@@ -58,16 +67,17 @@ export default function QuestionHead(props) {
             ? 'Medium'
             : 'Hard'}
         </span>
+      </div>
+      <div className="question-actions">
         {admin && (
           <button
-            className="btn btn-danger btn-sm"
+            className="btn-delete"
             aria-label="Remove"
             onClick={handleDel}
           >
-            X
+            Delete
           </button>
         )}
-        {/* Add Edit button */}
         {admin && (
           <Editques
             key={props.id}
@@ -78,6 +88,20 @@ export default function QuestionHead(props) {
             id={props.id}
           />
         )}
+        <button
+          className="btn-plag-check"
+          aria-label="Plagiarism Check"
+          onClick={onPlagCheck}
+        >
+          Plag Check
+        </button>
+        <button
+          className="btn-add-testcases"
+          aria-label="Add Test Cases"
+          onClick={onAddTestcases}
+        >
+          Add Testcases
+        </button>
       </div>
     </li>
   );

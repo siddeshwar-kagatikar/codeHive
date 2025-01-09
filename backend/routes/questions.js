@@ -26,7 +26,6 @@ router.use('/addquestion', [
 ]);
 
 router.post('/addquestion',fetchuser, async (req, res) => {
-    console.log('entered backend of addquestion');
     try {
         const { roomId, heading, question, example, difficulty } = req.body;
         const errors = validationResult(req);
@@ -80,6 +79,42 @@ router.delete('/deletequestion/:id', fetchuser, async (req, res) => {
         }
         const delques = await Question.findByIdAndDelete(id);
         res.json({ "Success": "Question has been deleted", delques });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal server error");
+    }
+})
+
+//Route 5: Save testcases
+router.put('/savetestcases/:id', fetchuser, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const question = await Question.findById(id);
+        if (!question) {
+            return res.status(404).send("Not Found");
+        }
+        // if (question.roomId !== req.body.roomId) {
+        //     return res.status(401).send("Not Allowed");
+        // }
+        // question.testcases = req.body.testcases;
+        // const savedQuestion = await question.save();
+        const updatedQuestion = await Question.findByIdAndUpdate(id, { $set: { testcases: req.body.testcases } }, { new: true });
+        res.json({ "Success": "Testcases have been saved", updatedQuestion });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal server error");
+    }
+})
+
+//Route 6: Get testcases
+router.get('/gettestcases/:id', fetchuser, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const question = await Question.findById(id).select('testcases');
+        if (!question) {
+            return res.status(404).send("Not Found");
+        }
+        res.json(question);
     } catch (error) {
         console.error(error.message);
         res.status(500).send("Internal server error");

@@ -5,13 +5,21 @@ import EditorContainer from './EditorContainer';
 import { makeSubmission } from './service';
 import { useNavigate } from "react-router-dom";
 import TimerContext from '../context/TimerContext';
+import { useParams } from 'react-router-dom';
+import questionContext from '../context/questionContext';
+// import { set } from 'mongoose';
 
 export default function PlayGround() {
   const location = useLocation();
-  const { heading, question, example } = location.state;
+  const { qid, heading, question, example } = location.state;
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [showLoader, setShowLoader] = useState(false);
+  const [testcases, setTestcases] = useState([]);
+  const [result, setResult] = useState([]);
+
+  const context = useContext(questionContext);
+  const { getTestcases } = context;
 
   const navigate = useNavigate();
   const { timeLeft } = useContext(TimerContext);
@@ -21,7 +29,7 @@ export default function PlayGround() {
     const [currentQuestion, setCurrentQuestion] = useState(question);
     const [currentExample, setCurrentExample] = useState(example);
     // const [currentDifficulty, setCurrentDifficulty] = useState(difficulty);
-  
+
     useEffect(() => {
       // Update the state when the change
       setCurrentHeading(heading);
@@ -87,35 +95,78 @@ export default function PlayGround() {
       setShowLoader(true);
     }
     else if(apiStatus === 'error'){
-      setOutput('Something went wrong');
       setShowLoader(false);
+      setOutput('Something went wrong');
       // alert(message);
     }
     else{
       //api success
+      setShowLoader(false);
       if(data.status.id === 3){
         setOutput(atob(data.stdout));
-        setShowLoader(false);
       }
       else{
         setOutput(atob(data.stderr));
-        setShowLoader(false);
-        // alert(data.status.description);
+      }
+    }
+  }
+
+  const callback2 = ({apiStatus,data,message}) => {
+    if(apiStatus === 'loading'){
+      setShowLoader(true);
+    }
+    else if(apiStatus === 'error'){
+      setShowLoader(false);
+      setOutput('Something went wrong');
+      // alert(message);
+    }
+    else{
+      //api success
+      setShowLoader(false);
+      if(data.status.id === 3){
+        setOutput(atob(data.stdout));
+      }
+      else{
+        setOutput(atob(data.stderr));
       }
     }
   }
 
   const runCode = useCallback(({code,language}) => {
-    console.log('running code');
-    makeSubmission({code,language,callback,input})
+    console.log("input",input);
+    makeSubmission({code, language, stdin:input, callback})
   },[input])
+
+  const submitCode = useCallback(({code,language}) => {
+    // console.log("input",input);
+    // makeSubmission({code, language, stdin:input, callback})
+
+    const fetchTestcases = async () => {
+      const data = await getTestcases(qid);
+      setTestcases(data.testcases);
+    };
+    fetchTestcases();
+
+    testcases.map((testcase) => {
+      makeSubmission({code, language, stdin:testcase.input, callback2})
+      if(output === testcase.output){
+        setResult([...result, true]);
+      }
+      else{
+        setResult([...result, false]);
+      }
+    });
+    setOutput(result);
+
+  },[input])
+
 
   return (
     <div className='playground-container'>
 
       <div className='content-container'>
         <div className='editor'>
-          <EditorContainer runCode={runCode} heading={currentHeading} question={currentQuestion} example={currentExample}/>
+          <EditorContainer submitCode={submitCode} runCode={runCode} qid={qid} heading={currentHeading} question={currentQuestion} example={currentExample}/>
         </div>
         <div className='input'>
           <div className='input-header'>

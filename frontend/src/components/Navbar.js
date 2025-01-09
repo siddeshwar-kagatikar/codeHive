@@ -32,9 +32,9 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary">
+    <nav className="navbar navbar-expand-lg bg-dark text-light">
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/">MyApp</Link>
+        <Link className="navbar-brand text-warning" to="/">CodeHive</Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -49,25 +49,25 @@ export default function Navbar() {
         <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <Link className="nav-link active" aria-current="page" to="/">Home</Link>
+              <Link className="nav-link active text-light" aria-current="page" to="/">Home</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/">Link</Link>
+              <Link className="nav-link text-light" to="#features">Features</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link disabled" aria-disabled="true">Disabled</a>
+              <a className="nav-link disabled text-secondary" aria-disabled="true">Disabled</a>
             </li>
           </ul>
           <div className="d-flex align-items-center">
             {timeLeft !== null && (
-              <div className="me-3">
+              <div className="me-3 text-light">
                 <strong>Time Left: </strong>{formatTime(timeLeft)}
               </div>
             )}
             {!isAuthenticated ? (
               <>
-                <Link className="btn btn-primary mx-1" to="/login" role="button">Login</Link>
-                <Link className="btn btn-primary mx-1" to="/signup" role="button">SignUp</Link>
+                <Link className="btn btn-warning mx-1" to="/login" role="button">Login</Link>
+                <Link className="btn btn-warning mx-1" to="/signup" role="button">SignUp</Link>
               </>
             ) : (
               <Logout handleLogout={handleLogout}/>

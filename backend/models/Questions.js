@@ -19,6 +19,22 @@ const QuestionSchema = new Schema({
         type: String,
         required: true
     },
+    testcases: [
+        {
+            id : {
+                type: Number,
+                required: true
+            },
+            input: {
+                type: String,
+                required: true
+            },
+            output: {
+                type: String,
+                required: true
+            }
+        }
+    ],
     difficulty: {
         type: Number,
         required: true

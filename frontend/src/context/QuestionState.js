@@ -71,8 +71,35 @@ const QuestionState = (props) => {
     setQuestions(questions.filter((question) => question._id !== id));
   }
 
+  const addTestcase = async (id, testcases) => {
+    const response = await fetch(`${host}/api/question/savetestcases/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
+      },
+      body: JSON.stringify({testcases})
+    });
+    const json = await response.json();
+    console.log(json);
+    setQuestions(questions.map((question) => question._id === id ? json : question));
+  }
+
+  const getTestcases = async (id) => {
+    const response = await fetch(`${host}/api/question/gettestcases/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
+      },
+    });
+    const json = await response.json();
+    console.log(json);
+    return json;
+  }
+
   return (
-    <QuestionContext.Provider value={{ questions, setques, getQuestions, addQuestion, editQuestion, deleteQuestion }}>
+    <QuestionContext.Provider value={{ questions, setques, getQuestions, addQuestion, editQuestion, deleteQuestion, addTestcase, getTestcases }}>
       {props.children}
     </QuestionContext.Provider>
   );
