@@ -8,7 +8,7 @@ export default function UserHome() {
 
   const handleStartTest = (e) => {
     e.preventDefault();
-    startTimer(30); // Start timer for 2 hours (7200 seconds)
+    startTimer(10000); // Start timer for 2 hours (7200 seconds)
     navigate("/addquestion");
   };
 

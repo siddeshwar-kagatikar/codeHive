@@ -25,7 +25,7 @@ export const getToken = async () => {
 };
 
 // Function to get a meeting ID
-export const createMeeting = async (token) => {
+export const creatMeeting = async (token) => {
     try {
         const VIDEOSDK_API_ENDPOINT = `${LOCAL_SERVER_URL}/create-meeting`;
         const response = await fetch(VIDEOSDK_API_ENDPOINT, {

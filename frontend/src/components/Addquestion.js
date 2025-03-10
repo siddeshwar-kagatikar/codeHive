@@ -24,6 +24,10 @@ export default function Addquestion() {
     addQuestion("1213", heading, question, example, difficulty);
   };
 
+  const onMeeting = () => {
+    navigate("/interview")
+  }
+
   useEffect(() => {
     if (timeLeft === null && !admin) {
       navigate("/userhome");
@@ -119,6 +123,9 @@ export default function Addquestion() {
           </form>
         </div>
       </div>
+      <button className="btn cta-button mt-2" type="button" onClick={onMeeting}>
+        Create Meeting
+      </button>
     </div>
   );
 }

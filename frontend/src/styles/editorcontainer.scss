@@ -1,69 +1,69 @@
-.root-editor-container{
-    background-color: blue;
+.root-editor-container {
+    background-color: #1a1a1a;
     height: 100%;
     display: flex;
     flex-direction: column;
     color: white;
 
-    .editor-header, .editor-footer{
+    .right-container {
         display: flex;
-        background-color: #1a1a1a;
-        justify-content: space-between;
-        button, select{
-            background-color: #373737;
-            border: none;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        select:focus{
-            outline: none;
-        }
-        button{
-            color: #00B8A2;
-            background-color: #2a3d3a;
-            cursor: pointer;
-        }
-        button:hover, select:hover{
-            color:#03f3d7;
-            background-color: #33615a;
-            cursor: pointer;
-            transition-duration: 0.5s;
-        }
-        .title{
-            font-size: 24px;
-        }
+        gap: 10px; /* Adds space between the two select elements */
     }
-
-    .label{
+  
+    .editor-header,
+    .editor-footer {
+      display: flex;
+      justify-content: space-between;
+      background-color: #1a1a1a;
+      padding: 10px;
+  
+      button,
+      select {
+        background-color: #373737;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s, color 0.3s;
+      }
+  
+      button:hover,
+      select:hover {
+        background-color: #33615a;
         color: #03f3d7;
-        display: 'inline-block';
-        padding: '10px 20px';
-        background-color: #2a3d3a;
-        border-radius: '10px';
-        border: 'none';
-        cursor: 'pointer';
-        text-align: 'center';
+      }
+  
+      .title {
+        font-size: 24px;
+      }
     }
-    .editor-footer{
-        background-color: #1a1a1a;
-        padding: 10px;
-        display: flex;
-        justify-content: space-between;
+  
+    .editor-body {
+      flex-grow: 1;
+      background-color: #1e1e1e;
     }
-    
-    .editor-body{
-        background-color: white;
-        flex-grow: 1;
+  
+    .label {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #2a3d3a;
+      color: #03f3d7;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
     }
-    
-    .left-container, .right-container{
-        display: flex;
-        gap: 10px;
-        padding: 10px;
+  
+    .offcanvas {
+      background-color: #333333;
+      color: white;
+  
+      .offcanvas-header {
+        background-color: #222222;
+      }
     }
+  }
 
-    
-}
 
+  
+  

@@ -88,20 +88,20 @@ export default function QuestionHead(props) {
             id={props.id}
           />
         )}
-        <button
+        {admin && (<button
           className="btn-plag-check"
           aria-label="Plagiarism Check"
           onClick={onPlagCheck}
         >
           Plag Check
-        </button>
-        <button
+        </button>)}
+        {admin && (<button
           className="btn-add-testcases"
           aria-label="Add Test Cases"
           onClick={onAddTestcases}
         >
           Add Testcases
-        </button>
+        </button>)}
       </div>
     </li>
   );

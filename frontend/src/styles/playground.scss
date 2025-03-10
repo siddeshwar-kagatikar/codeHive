@@ -1,95 +1,153 @@
-.playground-container{
-    height: 100vh;
+.playground-container {
     display: flex;
-    flex-direction: column;
+    height: 100vh;
+    background-color: #1e1e1e;
+    color: #f5c518;
 
-    .icon-container{
+    .heading {
+        text-align: left; /* Ensures the text is left-aligned */
+        margin: 0; /* Removes any default margin, if needed */
+      }
+      
+    .section-title{
+      text-align: left; /* Ensures the text is left-aligned */
+      margin: 0; /* Removes any default margin, if needed */
+    }
+
+    .question-panel {
+      width: 40%;
+      padding: 20px;
+      background-color: #2a2a2a;
+      overflow-y: auto;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+  
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+      }
+  
+      p {
+        margin-bottom: 15px;
+      }
+  
+      .example-section {
+        background-color: #333;
+        padding: 10px;
+        border-radius: 5px;
+        font-family: monospace;
+      }
+    }
+  
+    .editor-panel {
+      width: 60%;
+      padding: 20px;
+  
+      .input-output-container {
         display: flex;
         gap: 10px;
-        align-items: center;
-        padding: 4px;
-    }
-
-    .content-container{
-        flex-grow: 1;
-        display: grid;
-        gap: 10px;
-        padding: 5px;
-        background-color: #1a1a1a;
-        grid-template-columns: 3fr 2fr;
-    }
-
-    .logo{
-        height: 100px;
-        border-radius: 50%;
-    }
-
-    .header{
-        display: flex;
-        justify-content: center;
-        background-color: #1e1e1e;
-        padding: 2px 0;
-    }
-    
-    .input, .output{
-        align-self: stretch;
-    }
-
-    .input{
-        background-color: dodgerblue;
-        display: flex;
-        flex-direction: column;
-        .input-header{
-            background-color: #c4c4c4;
+        margin-top: 15px;
+  
+        .input-section,
+        .output-section {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+  
+          label {
+            margin-bottom: 5px;
+          }
+  
+          textarea {
+            flex: 1;
+            background-color: #1e1e1e;
+            border: 1px solid #444;
+            color: #f5c518;
+            border-radius: 5px;
             padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            outline: none;
-        }
-        textarea{
-            flex-grow: 1;
-            border: none;
             resize: none;
-            padding: 10px;
-            font-size: 15px;
+          }
         }
-        textarea:focus{
-            outline: none;
-        }
+      }
+  
+      .run-btn {
+        margin-top: 15px;
+        padding: 10px;
+        background-color: #f5c518;
+        border: none;
+        color: #1e1e1e;
+        cursor: pointer;
+        border-radius: 5px;
+      }
     }
-
-    .editor{
-        grid-row: 1/3;
+  
+    .loader-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 100vw;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  
+      .loader {
+        border: 5px solid rgba(255, 255, 255, 0.3);
+        border-top: 5px solid #f5c518;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+      }
     }
-
-    .fullpage-loader{
-        border: 2px solid red;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0,0,0, 0.167);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        .loader{
-           width: 50px;
-           height: 50px;
-           background-color: transparent;
-           border: 8px solid rgba(255, 99, 71, 0.357);
-           border-left-color: tomato;
-           animation: 0.8s loader infinite linear;
-           border-radius: 50%;
-        }
-    }
-}
-
-@keyframes loader{
-    to{
-        transform: rotate(0deg);
-    }
-    from{
+  
+    @keyframes spin {
+      to {
         transform: rotate(360deg);
+      }
     }
-}
+  
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  
+      .modal {
+        background-color: #2a2a2a;
+        padding: 20px;
+        border-radius: 10px;
+        width: 400px;
+  
+        h3 {
+          margin-bottom: 15px;
+        }
+  
+        textarea {
+          width: 100%;
+          margin-bottom: 15px;
+          background-color: #1e1e1e;
+          border: 1px solid #444;
+          color: #f5c518;
+          border-radius: 5px;
+          padding: 10px;
+        }
+  
+        button {
+          padding: 10px;
+          background-color: #f5c518;
+          border: none;
+          color: #1e1e1e;
+          cursor: pointer;
+          border-radius: 5px;
+        }
+      }
+    }
+  }
+  
+  
