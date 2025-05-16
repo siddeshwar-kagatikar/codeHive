@@ -8,6 +8,9 @@ import TimerContext from '../context/TimerContext';
 import { useParams } from 'react-router-dom';
 import questionContext from '../context/questionContext';
 
+import io from 'socket.io-client';
+const socket = io.connect('http://localhost:5000');
+
 export default function PlayGround() {
   const location = useLocation();
   const { qid, heading, question, example } = location.state;
@@ -17,6 +20,10 @@ export default function PlayGround() {
   const [testcases, setTestcases] = useState([]);
   const [result, setResult] = useState([]);
   const [showModal, setShowModal] = useState(false); // For Test Case Modal
+  const [showTestCaseResult, setShowTestCaseResult] = useState(false);
+  const [passedTestCases, setPassedTestCases] = useState(0);
+  const [totalTestCases, setTotalTestCases] = useState(0);
+
 
   const context = useContext(questionContext);
   const { getTestcases } = context;
@@ -29,6 +36,20 @@ export default function PlayGround() {
      const [currentQuestion, setCurrentQuestion] = useState(question);
      const [currentExample, setCurrentExample] = useState(example);
      // const [currentDifficulty, setCurrentDifficulty] = useState(difficulty);
+
+     // Listening for broadcasted questions
+    useEffect(() => {
+      socket.on('receive_question', (data) => {
+          console.log("Received updated question:", data);
+          setCurrentQuestion(data.question)
+          setCurrentHeading(data.heading)
+          setCurrentExample(data.example)
+      });
+      // Cleanup on unmount
+      return () => {
+          socket.off('receive_question');
+      };
+    }, []);
  
      useEffect(() => {
        // Update the state when the change
@@ -119,76 +140,92 @@ export default function PlayGround() {
      makeSubmission({code, language, stdin:input, callback})
    },[input])
  
-   const submitCode = useCallback(({ code, language }) => {
-    setResult([]);
   
-    const fetchTestcases = async () => {
-      const data = await getTestcases(qid);
-      setTestcases(data.testcases);
-    };
+  const submitCode = useCallback(async ({ code, language }) => {
+    // Fetch testcases
+    const data = await getTestcases(qid);
+    const testcases = data.testcases;
+    setTestcases(testcases); // Optional, if you want to update state
   
-    const processSubmissions = async () => {
-      if (!testcases || testcases.length === 0) return;
+    let allPassed = true;
+    let pass=0;
+    for (let i = 0; i < testcases.length; i++) {
+      const testinput = testcases[i].input;
+      const testoutput = testcases[i].output;
   
-      const newResults = []; // Temporary array to store results
-      for (let i = 0; i < testcases.length; i++) {
-        await makeSubmission({ 
-          code, 
-          language, 
-          stdin: testcases[i].input, 
-          callback: (output) => {
-            // if (output === testcases[i].output) {
-            //   newResults.push(true);
-            // } else {
-            //   newResults.push(false);
-            // }
-            newResults.push(output)
-          }
-        });
+      // Await the result of submission
+      await makeSubmission({ code, language, stdin: testinput, callback});
+  
+      // Compare output with expected output
+      if (output.trim() !== testoutput.trim()) { // trim to avoid extra space issues
+        allPassed = false;
+        console.log("output:",output)
+        console.log("ground truth:",testoutput)
+        console.log("ground input:", testinput)
+        console.log('Failed in testcase', i);
       }
+      else pass = pass+1;
+    }
   
-      setResult(newResults);
-      console.log("result: ", newResults);
-    };
+    if (allPassed) {
+      console.log('All testcases passed');
+    }
+    setShowTestCaseResult(true);
+    setPassedTestCases(pass);
+    setTotalTestCases(testcases.length);
+  }, [qid, setTestcases]); // Add qid and setTestcases in dependency array
   
-    const fetchAndProcess = async () => {
-      await fetchTestcases();
-      await processSubmissions();
-    };
-  
-    fetchAndProcess();
-  }, [input]);
     return (
+      <>
+     {showTestCaseResult && (
+      <div className="testcase-result-container">
+        <div className="testcase-result-box">
+          <button className="close-btn" onClick={() => setShowTestCaseResult(false)}>✖</button>
+          <h3>Test Cases Result</h3>
+          <div className="progress-bar-wrapper">
+            <div
+              className="progress-bar-fill"
+              style={{
+                width: `${(passedTestCases / totalTestCases) * 100}%`,
+              }}
+            ></div>
+            <span className="progress-text">{passedTestCases} / {totalTestCases}</span>
+          </div>
+        </div>
+      </div>
+    )}
+
+
     <div className="playground-container">
     {/* Left Question Panel */}
     <div className="question-panel">
       {/* Heading */}
-      <h1 className="heading">{heading}</h1>
+      <h1 className="heading">{currentHeading}</h1>
 
       {/* Question Section */}
       <div className="example-section mt-3">
         <h4 className="section-title">Question</h4>
-        <div className="content-box">{question}</div>
+        <div className="content-box">{currentQuestion}</div>
       </div>
 
       {/* Example Section */}
       <div className="example-section mt-3">
         <h4 className="section-title">Example</h4>
-        <div className="content-box">{example}</div>
+        <div className="content-box">{currentExample}</div>
       </div>
 
-      <div className="input-output-container">
+      <div className="input-output-container py-4">
+       <label className='py-1' style={{ fontSize: '1rem', fontWeight: 'bold' }}>Input: </label>
             <div className="input-section">
-              <label>Input</label>
-              <textarea value={input} onChange={changeInputText}></textarea>
+              <textarea value={input} style={{width:'80%', height:'20vh'}} onChange={changeInputText}></textarea>
             </div>
+            <label style={{ fontSize: '1rem', fontWeight: 'bold' }}>Output: </label>
             <div className="output-section">
-              <label>Output</label>
-              <textarea value={output} readOnly></textarea>
+              <textarea value={output} style={{width:'80%', height:'20vh'}} readOnly></textarea>
             </div>
           </div>
-    </div>
 
+    </div>
 
         {/* Right Editor Panel */}
         <div className="editor-panel">
@@ -202,5 +239,6 @@ export default function PlayGround() {
           </div>
         )}
       </div>
+      </>
     );
 }

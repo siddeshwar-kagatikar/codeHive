@@ -1,26 +1,34 @@
 import React, { useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import TimerContext from '../context/TimerContext';
+import '../styles/UserHome.css'; // Import the CSS file
 
 export default function UserHome() {
   const navigate = useNavigate();
-  const { startTimer} = useContext(TimerContext);
+  const { startTimer } = useContext(TimerContext);
 
   const handleStartTest = (e) => {
     e.preventDefault();
-    startTimer(10000); // Start timer for 2 hours (7200 seconds)
+    startTimer(7200); // 2 hours
     navigate("/addquestion");
   };
 
-
   return (
-    <div>
-      <button type="button" className="btn btn-warning" onClick={handleStartTest}>
-        Start Test
-      </button>
-      <button type="button" className="btn btn-light">
-        Practice
-      </button>
+    <div className="user-home-container">
+      <div className="background-blur blur1"></div>
+      <div className="background-blur blur2"></div>
+
+      <div className="content">
+        <h1 className="heading">Ready to Level Up Your Code?</h1>
+        <p className="description">
+          This challenge will push your logic, creativity, and coding skills. <br />
+          <span className="highlight">Take a breath. Trust your skills. Let’s go.</span>
+        </p>
+
+        <button className="start-button" onClick={handleStartTest}>
+          🚀 Start Test
+        </button>
+      </div>
     </div>
   );
 }

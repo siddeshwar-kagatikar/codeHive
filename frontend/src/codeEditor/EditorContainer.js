@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect, useContext } from 'react';
 import codeContext from '../context/codeContext';
 import '../styles/editorcontainer.scss';
 import Editor from '@monaco-editor/react';
+import io from 'socket.io-client';
+const socket = io.connect('http://localhost:5000');
 
 const editorOptions = {
   wordWrap: 'on',
@@ -14,7 +16,7 @@ const fileExtensionMapping = {
   javascript: 'js',
 };
 
-export default function EditorContainer({ submitCode, runCode, qid, heading, question, example }) {
+export default function EditorContainer({ submitCode, runCode, qid, heading, question, example, roomId }) {
   const context = useContext(codeContext);
   const { prevcode, getCode } = context;
 
@@ -48,7 +50,29 @@ export default function EditorContainer({ submitCode, runCode, qid, heading, que
   const onChangeCode = (newCode) => {
     setCode(newCode);
     codeRef.current = newCode;
+
+    if (socket && roomId) {
+      socket.emit('send_code', { roomId, code: newCode });
+    }
   };
+
+  useEffect(() => {
+    if (socket) {
+      const handleReceiveCode = ({ roomId: receivedRoomId, code: receivedCode }) => {
+        if (receivedRoomId === roomId) {
+          setCode(receivedCode);
+          codeRef.current = receivedCode;
+        }
+      };
+  
+      socket.on('receive_code', handleReceiveCode);
+  
+      // Cleanup on unmount
+      return () => {
+        socket.off('receive_code', handleReceiveCode);
+      };
+    }
+  }, [socket, roomId]);
 
   const importCode = (e) => {
     const file = e.target.files[0];

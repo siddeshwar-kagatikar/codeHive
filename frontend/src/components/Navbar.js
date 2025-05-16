@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TimerContext from '../context/TimerContext';
 import Logout from './Logout';
+import '../styles/Navbar.css'; // New CSS file
 
 export default function Navbar() {
   const { timeLeft } = useContext(TimerContext);
   const navigate = useNavigate();
 
   const formatTime = (time) => {
-    if (time === null) return ''; // Timer not running
+    if (time === null) return '';
     const hours = Math.floor(time / 3600);
     const minutes = Math.floor((time % 3600) / 60);
     const seconds = time % 60;
@@ -24,7 +24,7 @@ export default function Navbar() {
     localStorage.removeItem('token');
     localStorage.removeItem('user_type');
     navigate('/login');
-    setIsAuthenticated(false); // Update state after logout
+    setIsAuthenticated(false);
   };
 
   useEffect(() => {
@@ -32,9 +32,9 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="navbar navbar-expand-lg bg-dark text-light">
+    <nav className="navbar navbar-expand-lg custom-navbar">
       <div className="container-fluid">
-        <Link className="navbar-brand text-warning" to="/">CodeHive</Link>
+        <Link className="navbar-brand brand-glow" to="/">CodeHive</Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -49,28 +49,28 @@ export default function Navbar() {
         <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <Link className="nav-link active text-light" aria-current="page" to="/">Home</Link>
+              <Link className="nav-link nav-link-custom" to="/">Home</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link text-light" to="#features">Features</Link>
+              <Link className="nav-link nav-link-custom" to="#features">Features</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link disabled text-secondary" aria-disabled="true">Disabled</a>
+              <span className="nav-link disabled text-muted">Disabled</span>
             </li>
           </ul>
-          <div className="d-flex align-items-center">
+          <div className="d-flex align-items-center gap-3">
             {timeLeft !== null && (
-              <div className="me-3 text-light">
-                <strong>Time Left: </strong>{formatTime(timeLeft)}
+              <div className="timer-box">
+                ⏱ {formatTime(timeLeft)}
               </div>
             )}
             {!isAuthenticated ? (
               <>
-                <Link className="btn btn-warning mx-1" to="/login" role="button">Login</Link>
-                <Link className="btn btn-warning mx-1" to="/signup" role="button">SignUp</Link>
+                <Link className="btn nav-btn" to="/login">Login</Link>
+                <Link className="btn nav-btn" to="/signup">SignUp</Link>
               </>
             ) : (
-              <Logout handleLogout={handleLogout}/>
+              <Logout handleLogout={handleLogout} />
             )}
           </div>
         </div>

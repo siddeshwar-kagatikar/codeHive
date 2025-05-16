@@ -14,6 +14,7 @@ export default function Addquestion() {
   const { addQuestion } = context;
   const navigate = useNavigate();
   const { timeLeft } = useContext(TimerContext);
+  let quesadded = false;
 
   const user = localStorage.getItem('user_type');
   const admin = user === 'admin';
@@ -22,10 +23,11 @@ export default function Addquestion() {
     e.preventDefault(); 
     console.log("Question Added");
     addQuestion("1213", heading, question, example, difficulty);
+    window.location.reload(); 
   };
 
   const onMeeting = () => {
-    navigate("/interview")
+    navigate("/meeting")
   }
 
   useEffect(() => {

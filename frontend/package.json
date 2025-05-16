@@ -8,6 +8,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@videosdk.live/react-sdk": "^0.1.105",
+    "@zegocloud/zego-uikit-prebuilt": "^2.14.1-beta",
     "bootstrap": "^5.3.1",
     "concurrently": "^8.2.0",
     "crypto": "^1.0.1",

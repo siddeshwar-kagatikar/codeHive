@@ -25,6 +25,7 @@ export default function QuestionHead(props) {
 
   const handleDel = () => {
     deleteQuestion(props.id, "1213");
+    window.location.reload();
   };
 
   const onPlagCheck = () => {

@@ -12,13 +12,14 @@ import PlayGround from './codeEditor/PlayGround';
 import UserHome from './components/UserHome';
 import Plag from './components/Plag';
 import Testcases from './components/Testcases';
-import Conference from './video/Conference';
-import Call from './video/Call';
+import HomePage from './video/HomePage/HomePage';
+import RoomPage from "./video/Room/Room";
+
 
 function App() {
   return (
     <div className="App">
-      {/* <CodeState>
+      <CodeState>
       <QuestionState>
         <TimerProvider> 
           <BrowserRouter>
@@ -29,17 +30,16 @@ function App() {
               <Route path="/signup" element={<Signup />} />
               <Route path="/userhome" element={<UserHome />} />
               <Route path="/addquestion" element={<Addquestion />} />
-              <Route path="/interview" element={<Call/>}/>
               <Route path='/question/:id' element={<PlayGround />} />
               <Route path="/plagcheck/:id" element={<Plag/>} />
               <Route path="/testcases/:id" element={<Testcases />} />
+              <Route path="/meeting" element={<HomePage />} />
+              <Route path="meeting/room/:roomId" element={<RoomPage />} />
             </Routes>
           </BrowserRouter>
         </TimerProvider>
       </QuestionState>
-      </CodeState> */}
-      {/* <Conference /> */}
-      <Call />
+      </CodeState>
     </div>
   );
 }

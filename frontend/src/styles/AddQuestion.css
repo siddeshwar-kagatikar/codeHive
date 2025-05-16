@@ -1,15 +1,15 @@
-.add-question-container {
+/* .add-question-container {
     font-family: 'Roboto', sans-serif;
     color: #333;
   }
   
   .offcanvas {
-    background-color: #f8f9fa; /* Light background for offcanvas */
+    background-color: #f8f9fa; 
     color: #333;
   }
   
   .offcanvas-header {
-    background-color: #1f2937; /* Match with hero-section */
+    background-color: #1f2937; 
     color: #fff;
   }
   
@@ -18,13 +18,13 @@
   }
   
   .cta-button {
-    background-color: #1f2937; /* Dark button */
+    background-color: #1f2937; 
     color: #fff;
     border: none;
   }
   
   .cta-button:hover {
-    background-color: #4a5568; /* Slightly lighter on hover */
+    background-color: #4a5568;
     color: #fff;
   }
   
@@ -34,27 +34,105 @@
   }
 
   .cta-button {
-    background-color: #f7d602; /* Yellow color */
-    color: #333; /* Dark text for contrast */
+    background-color: #f7d602; 
+    color: #333; 
     border: none;
     padding: 10px 20px;
     font-size: 1.1rem;
     font-weight: bold;
-    border-radius: 30px; /* Rounded button */
+    border-radius: 30px; 
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease-in-out; /* Smooth transition */
+    transition: all 0.3s ease-in-out; 
     cursor: pointer;
   }
   
   .cta-button:hover {
-    background-color: #ffd700; /* Brighter yellow on hover */
-    color: #1f2937; /* Slightly darker text */
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Elevated shadow */
-    transform: scale(1.1); /* Slightly larger on hover */
+    background-color: #ffd700; 
+    color: #1f2937; 
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); 
+    transform: scale(1.1); 
   }
   
   .cta-button:active {
-    transform: scale(0.95); /* Subtle press effect */
+    transform: scale(0.95);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
-  
+   */
+
+   /* AddQuestion.css */
+
+/* Overall page styling */
+.add-question-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: #f8fafc;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Bootstrap override for buttons */
+.cta-button {
+  background: linear-gradient(90deg, #06b6d4, #3b82f6);
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 0.6rem 1.5rem;
+  border-radius: 50px;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+}
+
+/* Offcanvas panel styles */
+.offcanvas {
+  background: #1e293b;
+  color: #f8fafc;
+}
+
+.offcanvas-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.offcanvas-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #38bdf8;
+}
+
+/* Form input styles */
+.form-label {
+  font-weight: 600;
+  color: #e0f2fe;
+}
+
+.form-control,
+.form-select {
+  background-color: #0f172a;
+  color: white;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+}
+
+textarea {
+  resize: none;
+}
+
+/* ShowQuestion container override */
+.container {
+  background-color: rgba(15, 23, 42, 0.5);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}

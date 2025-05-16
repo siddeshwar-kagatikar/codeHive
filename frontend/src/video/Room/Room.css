@@ -5,13 +5,13 @@
   color: #f5c518;
 
   .heading {
-    text-align: left;
-    margin: 0;
-  }
-
-  .section-title {
-    text-align: left;
-    margin: 0;
+      text-align: left; /* Ensures the text is left-aligned */
+      margin: 0; /* Removes any default margin, if needed */
+    }
+    
+  .section-title{
+    text-align: left; /* Ensures the text is left-aligned */
+    margin: 0; /* Removes any default margin, if needed */
   }
 
   .question-panel {
@@ -46,9 +46,6 @@
       display: flex;
       gap: 10px;
       margin-top: 15px;
-      width: 80%; /* ✅ Added width */
-      margin-left: auto; /* ✅ Center horizontally */
-      margin-right: auto; /* ✅ Center horizontally */
 
       .input-section,
       .output-section {
@@ -153,80 +150,3 @@
   }
 }
 
-.testcase-result-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  background: rgba(0, 0, 0, 0.4); /* Dim background */
-}
-
-.testcase-result-box {
-  background: #fff;
-  padding: 25px 35px;
-  border-radius: 12px;
-  text-align: center;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-  min-width: 350px;
-  position: relative;
-}
-
-.testcase-result-box h3 {
-  margin-bottom: 15px;
-  font-size: 1.4rem;
-  color: #333;
-}
-
-.progress-bar-wrapper {
-  width: 100%;
-  height: 30px;
-  background: #e0e0e0;
-  border-radius: 20px;
-  overflow: hidden;
-  position: relative;
-  margin-top: 10px;
-}
-
-.progress-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #4caf50, #66bb6a); /* Green gradient */
-  transition: width 0.5s ease-in-out;
-  position: absolute;
-  left: 0;
-  top: 0;
-}
-
-.progress-text {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: black; /* Black color */
-  z-index: 2;
-  font-size: 1rem;
-}
-
-/* Close button styling */
-.close-btn {
-  position: absolute;
-  top: 8px;
-  right: 12px;
-  background: transparent;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-  color: #333;
-  transition: color 0.3s;
-}
-
-.close-btn:hover {
-  color: red;
-}

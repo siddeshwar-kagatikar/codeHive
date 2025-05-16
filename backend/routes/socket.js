@@ -24,6 +24,11 @@ module.exports = (server) => {
       console.log('Edited question from client:', data);
       socket.broadcast.emit('receive_question', data); // Broadcast question to all other clients
     });
+
+    socket.on('send_code', (data)=>{
+      console.log("code from user: ",data);
+      socket.broadcast.emit('receive_code', data);
+    })
   });
 
   return io;
