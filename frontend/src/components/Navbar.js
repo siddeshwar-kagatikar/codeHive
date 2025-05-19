@@ -18,18 +18,12 @@ export default function Navbar() {
       .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user_type');
     navigate('/login');
-    setIsAuthenticated(false);
   };
-
-  useEffect(() => {
-    setIsAuthenticated(!!localStorage.getItem('token'));
-  }, []);
 
   return (
     <nav className="navbar navbar-expand-lg custom-navbar">
@@ -51,12 +45,10 @@ export default function Navbar() {
             <li className="nav-item">
               <Link className="nav-link nav-link-custom" to="/">Home</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link nav-link-custom" to="#features">Features</Link>
-            </li>
-            <li className="nav-item">
-              <span className="nav-link disabled text-muted">Disabled</span>
-            </li>
+            {localStorage.getItem('token') && <li className="nav-item">
+              <Link className="nav-link nav-link-custom" to="/addquestion">Question</Link>
+            </li>}
+           
           </ul>
           <div className="d-flex align-items-center gap-3">
             {timeLeft !== null && (
@@ -64,7 +56,7 @@ export default function Navbar() {
                 ⏱ {formatTime(timeLeft)}
               </div>
             )}
-            {!isAuthenticated ? (
+            {!localStorage.getItem('token')? (
               <>
                 <Link className="btn nav-btn" to="/login">Login</Link>
                 <Link className="btn nav-btn" to="/signup">SignUp</Link>

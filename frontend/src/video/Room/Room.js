@@ -147,18 +147,69 @@ import { makeSubmission } from '../../codeEditor/service';
               </>
             )}
             <div>
-            <div ref={videoContainerRef} className="video-container" />
-              <div className="input-output-container">
-              <div className="input-section">
-                <label>Input</label>
-                <textarea value={input} onChange={changeInputText}></textarea>
-              </div>
-              <div className="output-section">
-                <label>Output</label>
-                <textarea value={output} readOnly></textarea>
-              </div>
+           <div ref={videoContainerRef} className="video-container" />
 
-            </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginTop: '1.5rem' }}>
+                
+                {/* Question Box */}
+                {/* <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <label style={{ marginBottom: '0.5rem', fontWeight: 600, color: '#94a3b8' }}>Question</label>
+                  <textarea
+                    style={{
+                      width: '100%',
+                      height: '120px',
+                      resize: 'vertical',
+                      padding: '0.75rem',
+                      fontSize: '1rem',
+                      background: '#0f172a',
+                      color: '#f8fafc',
+                      border: '1px solid #475569',
+                      borderRadius: '8px'
+                    }}
+                    defaultValue={`Write a function that takes a list of integers and returns the sum of all even numbers.`}
+                  />
+                </div> */}
+
+                {/* Input Box */}
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <label style={{ marginBottom: '0.5rem', fontWeight: 600, color: '#94a3b8' }}>Input</label>
+                  <textarea
+                    style={{
+                      width: '100%',
+                      height: '120px',
+                      resize: 'vertical',
+                      padding: '0.75rem',
+                      fontSize: '1rem',
+                      background: '#0f172a',
+                      color: '#f8fafc',
+                      border: '1px solid #475569',
+                      borderRadius: '8px'
+                    }}
+                    value={input}
+                    onChange={changeInputText}
+                  />
+                </div>
+
+                {/* Output Box */}
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <label style={{ marginBottom: '0.5rem', fontWeight: 600, color: '#94a3b8' }}>Output</label>
+                  <textarea
+                    style={{
+                      width: '100%',
+                      height: '120px',
+                      resize: 'vertical',
+                      padding: '0.75rem',
+                      fontSize: '1rem',
+                      background: '#0f172a',
+                      color: '#f8fafc',
+                      border: '1px solid #475569',
+                      borderRadius: '8px'
+                    }}
+                    value={output}
+                    readOnly
+                  />
+                </div>
+              </div>
             </div>
             <div className="editor-panel">
               <EditorContainer runCode={runCode} submitCode={submitCode} roomId={roomId}/>

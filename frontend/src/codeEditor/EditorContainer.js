@@ -152,15 +152,21 @@ export default function EditorContainer({ submitCode, runCode, qid, heading, que
       </div>
       <div className="editor-footer">
         <button onClick={onSubmitCode}>Submit Code</button>
-        <label htmlFor="import-code" className="label">
+        <button onClick={() => document.getElementById("import-code").click()}>
           Import Code
-        </label>
+        </button>
+        <input
+          type="file"
+          id="import-code"
+          style={{ display: "none" }}
+          onChange={importCode}
+        />
         <input type="file" id="import-code" style={{ display: "none" }} onChange={importCode} />
         <button onClick={exportCode}>Export Code</button>
         <button onClick={onRunCode}>Run Code</button>
-        <button onClick={toggleFullScreen}>
+        {/* <button onClick={toggleFullScreen}>
           {fullScreenMode ? "Exit Full Screen" : "Full Screen"}
-        </button>
+        </button> */}
       </div>
     </div>
   );  
