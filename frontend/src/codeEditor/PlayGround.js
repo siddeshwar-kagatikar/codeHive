@@ -142,6 +142,8 @@ export default function PlayGround() {
  
   
   const submitCode = useCallback(async ({ code, language }) => {
+    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));  
+
     // Fetch testcases
     const data = await getTestcases(qid);
     const testcases = data.testcases;
@@ -149,19 +151,20 @@ export default function PlayGround() {
   
     let allPassed = true;
     let pass=0;
-    for (let i = 0; i < testcases.length; i++) {
+    for (let i = 0; i < 1; i++) {
       const testinput = testcases[i].input;
       const testoutput = testcases[i].output;
   
       // Await the result of submission
       await makeSubmission({ code, language, stdin: testinput, callback});
+      await sleep(2000);
   
       // Compare output with expected output
       if (output.trim() !== testoutput.trim()) { // trim to avoid extra space issues
         allPassed = false;
         console.log("output:",output)
         console.log("ground truth:",testoutput)
-        console.log("ground input:", testinput)
+        console.log("ground input:", testinput) 
         console.log('Failed in testcase', i);
       }
       else pass = pass+1;

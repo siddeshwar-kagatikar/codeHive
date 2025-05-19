@@ -67,6 +67,7 @@ export async function makeSubmission({code, language, callback, stdin}) {
         }
 
         if(apiSubmissionResult){
+            console.log("apiSubmissionResult",apiSubmissionResult)  
             callback({
                 apiStatus: 'success',
                 data: apiSubmissionResult

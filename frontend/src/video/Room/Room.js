@@ -140,9 +140,9 @@ import { makeSubmission } from '../../codeEditor/service';
             {!joined && (
               <>
                 <header className="room-header">
-                  {/* {callType === "one-on-one"
-                    ? "One-on-One Video Call"
-                    : "Group Video Call"} */}
+                    {/* {callType === "one-on-one"
+                      ? "One-on-One Video Call"
+                      : "Group Video Call"} */}
                 </header>
               </>
             )}
