@@ -1,0 +1,13 @@
+.card {
+  border-radius: 12px;
+}
+
+.table th, .table td {
+  vertical-align: middle;
+  font-size: 16px;
+}
+
+h2 {
+  font-weight: 600;
+  font-family: 'Segoe UI', sans-serif;
+}

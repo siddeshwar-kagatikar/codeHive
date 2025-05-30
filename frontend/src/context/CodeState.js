@@ -25,41 +25,60 @@ const CodeState = (props) => {
         }
     }
 
-    const saveCode = async (qid, code) => {
-        console.log('entered saveCode');
+    const getAllCode = async () => {
+        try {
+            const response = await fetch(`${host}/api/code/fetchallcode`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "auth-token": localStorage.getItem("token"),
+                }
+            });
+            const json = await response.json();
+            console.log(json);
+            return json;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    const saveCode = async (qid, language, code, solved) => {
+        console.log(language,code);
         const response = await fetch(`${host}/api/code/savecode`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "auth-token": localStorage.getItem("token"),
             },
-            body: JSON.stringify({ qid, code })
+            body: JSON.stringify({ qid, code, language, solved })
         });
         const json = await response.json();
         console.log(json);
-        setprevCode(json.code); 
+        // setprevCode(json.code); 
     }
 
     const plagCheck = async (qid) => {
-        try{
+        try {
             const response = await fetch(`${host}/api/code/plagcheck`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "auth-token": localStorage.getItem("token"),
-                },
-                body: JSON.stringify({ qid })
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "auth-token": localStorage.getItem("token"),
+            },
+            body: JSON.stringify({ qid })
             });
+
             const json = await response.json();
-            setPlags(json);
+            setPlags(json.comparisons || []); // Safely access comparisons
             console.log(json);
-        }catch(err){
+        } catch (err) {
             console.log(err);
         }
-    }
+    };
+
 
     return (
-        <CodeContext.Provider value={{ prevcode, plags, getCode, saveCode, plagCheck }}>
+        <CodeContext.Provider value={{ prevcode, plags, getCode, getAllCode, saveCode, plagCheck }}>
           {props.children}
         </CodeContext.Provider>
       );

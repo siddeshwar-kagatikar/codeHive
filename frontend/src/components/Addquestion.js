@@ -18,6 +18,7 @@ export default function Addquestion() {
 
   const user = localStorage.getItem('user_type');
   const admin = user === 'admin';
+  const seeResult = " Show Results ";
 
   const handleSubmit = (e) => {
     e.preventDefault(); 
@@ -49,6 +50,17 @@ export default function Addquestion() {
           Add Question
         </button>
       )}
+
+      {admin && (
+        <button
+          className="btn cta-button mt-3 mx-4"
+          type="button"
+          onClick={() => navigate("/results")}
+        >
+          {seeResult}
+        </button>
+      )}
+
       <div className="container mt-3">
         <ShowQuestion />
       </div>

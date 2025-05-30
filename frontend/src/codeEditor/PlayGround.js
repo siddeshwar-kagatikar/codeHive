@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import TimerContext from '../context/TimerContext';
 import { useParams } from 'react-router-dom';
 import questionContext from '../context/questionContext';
+import codeContext from '../context/codeContext';
 
 import io from 'socket.io-client';
 const socket = io.connect('http://localhost:5000');
@@ -27,6 +28,8 @@ export default function PlayGround() {
 
   const context = useContext(questionContext);
   const { getTestcases } = context;
+  const codeContextData = useContext(codeContext);
+  const { saveCode } = codeContextData;
 
   const navigate = useNavigate();
   const { timeLeft } = useContext(TimerContext);
@@ -142,7 +145,7 @@ export default function PlayGround() {
  
   
   const submitCode = useCallback(async ({ code, language }) => {
-    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));  
+    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms)); 
 
     // Fetch testcases
     const data = await getTestcases(qid);
@@ -171,7 +174,12 @@ export default function PlayGround() {
     }
   
     if (allPassed) {
+      await saveCode(qid,language,code,true);
       console.log('All testcases passed');
+    }
+    else {
+      await saveCode(qid,language,code,false);
+      console.log('Some testcases failed');
     }
     setShowTestCaseResult(true);
     setPassedTestCases(pass);

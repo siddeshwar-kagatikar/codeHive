@@ -11,12 +11,12 @@ export default function Plag() {
 
   useEffect(() => {
     plagCheck(id);
-  }, [id]);
+  }, []);
 
   return (
     <div>
       <h2 className="text-center my-4">Plagiarism Check Results</h2>
-
+      {console.log(plags)}
       {plags.length === 0 ? (
         <p className="text-center text-muted">Test not conducted/finished yet.</p>
       ) : (
@@ -29,7 +29,7 @@ export default function Plag() {
             </tr>
           </thead>
           <tbody>
-            {plags.map((plag, index) => (
+            {(plags || []).map((plag, index) => (
               <tr
                 key={index}
                 className={parseFloat(plag.similarity) > 50 ? 'highlight-row' : ''}

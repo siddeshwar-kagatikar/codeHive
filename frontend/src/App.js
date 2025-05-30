@@ -12,8 +12,11 @@ import PlayGround from './codeEditor/PlayGround';
 import UserHome from './components/UserHome';
 import Plag from './components/Plag';
 import Testcases from './components/Testcases';
-import HomePage from './video/HomePage/HomePage';
+// import HomePage from './video/HomePage/HomePage';
 import RoomPage from "./video/Room/Room";
+import Results from './components/Results';
+// import Video from './components/Video';
+import Room from './components/Room';
 
 
 function App() {
@@ -33,7 +36,8 @@ function App() {
               <Route path='/question/:id' element={<PlayGround />} />
               <Route path="/plagcheck/:id" element={<Plag/>} />
               <Route path="/testcases/:id" element={<Testcases />} />
-              <Route path="/meeting" element={<HomePage />} />
+              <Route path="/meeting" element={<Room/>} />
+              <Route path="/results" element={<Results/>} />
               <Route path="meeting/room/:roomId" element={<RoomPage />} />
             </Routes>
           </BrowserRouter>
