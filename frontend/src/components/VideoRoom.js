@@ -3,7 +3,7 @@ import AgoraRTC from 'agora-rtc-sdk-ng';
 import { VideoPlayer } from './VideoPlayer';
 
 const APP_ID = '14358986116341b9a57f71d58c652b1a';
-const TOKEN = '007eJxTYFjumcqW1fXxf1KCt94ewY9/S0WWXgxexTGF+cabU7ITr0UpMBiaGJtaWFqYGRqaGZsYJlkmmpqnmRummFokm5kaJRkmlrqZZzQEMjIkTd3FyMgAgSA+M0N5ShYDAwAVZR5Q';
+const TOKEN = '007eJxTYODui3igfnOnG7vyyYnMRaz1Rz9d19yYXVzr9a+yUoBjZ7cCg6GJsamFpYWZoaGZsYlhkmWiqXmauWGKqUWymalRkmHi9TuWGQ2BjAwRYUIMjFAI4jMzlKdkMTAAAKArHMI=';
 const CHANNEL = 'wdj';
 
 const client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
@@ -17,10 +17,14 @@ export default function VideoRoom({ onLeave }) {
 
     if (mediaType === 'video' && user.videoTrack) {
       setUsers((prev) => {
-        // Prevent duplicate user entries
         const alreadyExists = prev.find((u) => u.uid === user.uid);
         return alreadyExists ? prev : [...prev, user];
       });
+    }
+
+    // 🔊 Play remote user's audio track
+    if (mediaType === 'audio' && user.audioTrack) {
+      user.audioTrack.play();
     }
   };
 
@@ -29,47 +33,51 @@ export default function VideoRoom({ onLeave }) {
   };
 
   useEffect(() => {
-  let isCancelled = false;
+    let isCancelled = false;
 
-  const init = async () => {
-    client.on('user-published', handleUserJoined);
-    client.on('user-left', handleUserLeft);
+    const init = async () => {
+      client.on('user-published', handleUserJoined);
+      client.on('user-left', handleUserLeft);
 
-    try {
-      const uid = await client.join(APP_ID, CHANNEL, TOKEN, null);
-      if (isCancelled) return;
+      try {
+        const uid = await client.join(APP_ID, CHANNEL, TOKEN, null);
+        if (isCancelled) return;
 
-      const tracks = await AgoraRTC.createMicrophoneAndCameraTracks();
-      if (isCancelled) return;
+        const tracks = await AgoraRTC.createMicrophoneAndCameraTracks();
+        if (isCancelled) return;
 
-      const [audioTrack, videoTrack] = tracks;
-      setLocalTracks(tracks);
+        const [audioTrack, videoTrack] = tracks;
+        setLocalTracks(tracks);
 
-      setUsers((prev) => [
-        ...prev,
-        { uid, videoTrack, audioTrack },
-      ]);
+        setUsers((prev) => [
+          ...prev,
+          { uid, videoTrack, audioTrack },
+        ]);
 
-      await client.publish(tracks);
-    } catch (err) {
-      if (!isCancelled) console.error('Agora error:', err);
-    }
-  };
+        await client.publish(tracks);
+      } catch (err) {
+        if (!isCancelled) console.error('Agora error:', err);
+      }
+    };
 
-  init();
+    init();
 
-  return () => {
-    isCancelled = true;
-    localTracks.forEach((track) => {
-      track.stop();
-      track.close();
-    });
-    client.off('user-published', handleUserJoined);
-    client.off('user-left', handleUserLeft);
-    client.unpublish(localTracks).catch(() => {});
-    client.leave().catch(() => {});
-  };
-}, [onLeave]);
+    return () => {
+      isCancelled = true;
+
+      localTracks.forEach((track) => {
+        if (track) {
+          track.stop();
+          track.close();
+        }
+      });
+
+      client.off('user-published', handleUserJoined);
+      client.off('user-left', handleUserLeft);
+      client.unpublish(localTracks).catch(() => {});
+      client.leave().catch(() => {});
+    };
+  }, [onLeave]);
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
