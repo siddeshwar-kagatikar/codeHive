@@ -3,7 +3,8 @@ const { Server } = require('socket.io');
 module.exports = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: "http://localhost:3000", // Adjust this to your frontend's URL
+      // origin: "http://localhost:3000", // Adjust this to your frontend's URL
+      origin: "https://code-hive-nu.vercel.app",
       methods: ["GET", "POST"],
     },
   });

@@ -3,12 +3,19 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 const initializeSocket = require('./routes/socket'); // Import the WebSocket logic
+require("dotenv").config();
 
 connectToMongo();
 const app = express();
 const port = 5000;
 
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+  origin: "https://code-hive-nu.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+
 app.use(express.json());
 
 // Routes
