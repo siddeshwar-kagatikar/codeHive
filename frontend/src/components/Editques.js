@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import questionContext from '../context/questionContext';
 import io from 'socket.io-client';
 
-const socket = io.connect('http://localhost:5000');
+const socket = io.connect('https://codehive-zgga.onrender.com');
 
 export default function Editques(props) {
     const context = useContext(questionContext);

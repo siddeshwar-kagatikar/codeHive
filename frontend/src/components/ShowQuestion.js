@@ -4,7 +4,7 @@ import QuestionHead from './QuestionHead';
 import { useNavigate } from "react-router-dom";
 import io from 'socket.io-client';
 import '../styles/ShowQuestion.css'; // Custom styles for the component
-const socket = io.connect('http://localhost:5000');
+const socket = io.connect('https://codehive-zgga.onrender.com');
 
 export default function ShowQuestion() {
     const context = useContext(questionContext);

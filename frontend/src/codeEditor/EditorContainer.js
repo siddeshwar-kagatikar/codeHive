@@ -3,7 +3,7 @@ import codeContext from '../context/codeContext';
 import '../styles/editorcontainer.scss';
 import Editor from '@monaco-editor/react';
 import io from 'socket.io-client';
-const socket = io.connect('http://localhost:5000');
+const socket = io.connect('https://codehive-zgga.onrender.com');
 
 const editorOptions = {
   wordWrap: 'on',
