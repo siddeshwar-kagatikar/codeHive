@@ -1,35 +1,35 @@
-const connectToMongo = require('./db');
-const express = require('express');
-const http = require('http');
-const cors = require('cors');
-const initializeSocket = require('./routes/socket'); // Import the WebSocket logic
 require("dotenv").config();
 
-connectToMongo();
-const app = express();
-const port = 5000;
+const connectToMongo = require("./db");
+const express = require("express");
+const http = require("http");
+const cors = require("cors");
+const initializeSocket = require("./routes/socket");
 
-// app.use(cors());
+connectToMongo();
+
+const app = express();
+
 app.use(cors({
   origin: "https://code-hive-nu.vercel.app",
   methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
+  allowedHeaders: ["Content-Type", "auth-token"]
 }));
 
 app.use(express.json());
 
 // Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/question', require('./routes/questions'));
-app.use('/api/code', require('./routes/code'));
+app.use("/api/auth", require("./routes/auth"));
+app.use("/api/question", require("./routes/questions"));
+app.use("/api/code", require("./routes/code"));
 
-// Create HTTP server
+// HTTP + Socket.IO
 const server = http.createServer(app);
-
-// Initialize WebSocket server
 initializeSocket(server);
 
-// Start the server
-server.listen(port, () => {
-  console.log(`Developing app listening at http://localhost:${port}`);
+// IMPORTANT: use Render-provided port
+const PORT = process.env.PORT || 5000;
+
+server.listen(PORT, () => {
+  console.log(`🚀 Backend running on port ${PORT}`);
 });
