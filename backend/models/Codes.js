@@ -20,7 +20,7 @@ const CodeSchema = new Schema({
     },
     solved: {
         type: Boolean,
-        default: false
+        default: false 
     }
 })
 

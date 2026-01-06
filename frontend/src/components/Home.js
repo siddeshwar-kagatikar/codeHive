@@ -1,8 +1,8 @@
-  import React from "react";
-  import Navbar from "./Navbar";
+  // import React from "react";
+  // import Navbar from "./Navbar";
   import "../styles/HomePage.css";
   import { motion } from "framer-motion";
-  import img from "../images/bg.jpg";
+  // import img from "../images/bg.jpg";
 
   const HomePage = () => {
     return (
