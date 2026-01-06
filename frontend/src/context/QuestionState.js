@@ -4,7 +4,7 @@ import QuestionContext from './questionContext';
 
 const QuestionState = (props) => {
   const [questions, setQuestions] = useState([]);
-  const host = "http://localhost:5000";
+  const host = "https://codehive-zgga.onrender.com";
 
   const setques = async (id,roomId,heading,question,example,difficulty) => {
     const json = { _id: id, roomId, heading, question, example, difficulty };

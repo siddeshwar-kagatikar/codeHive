@@ -5,7 +5,7 @@ const CodeState = (props) => {
 
     const [prevcode, setprevCode] = useState("");
     const [plags, setPlags] = useState("");
-    const host = "http://localhost:5000";
+    const host = "https://codehive-zgga.onrender.com";
 
     const getCode = async (qid, language) => {
         try{
